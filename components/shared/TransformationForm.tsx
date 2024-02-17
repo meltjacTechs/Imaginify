@@ -68,6 +68,12 @@ userId, type, creditBalance }: TransformationFormProps) => {
 
         }
 
+
+    const onInputChangeHandler = (fieldName: string,
+        value: string, type: string, 
+        onChangeField: (value: string) => void) => {
+
+        }
     return (
      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -109,6 +115,46 @@ userId, type, creditBalance }: TransformationFormProps) => {
 
                      )}
                 />
+            )}
+
+            {(type === 'remove' || type === 'recolor') && (
+                <div className="prompt-field">
+                    <CustomField 
+                       control={form.control} 
+                       name="prompt"
+                       formLabel={
+                        type === 'remove' ? 'Object to remove' : 
+                        'Object to recolor'
+                       }
+                       className="w-full"
+                       render={(({ field }) => (
+                           <Input
+                             value={field.value}
+                             className="input-field"
+                             onChange={(e) => onInputChangeHandler(
+                                'prompt', 
+                                 e.target.value,
+                                 type,
+                                 field.onChange
+                             )}
+                           />
+                       ))}
+                    />
+
+                    {type === 'recolor' && (
+                        <CustomField 
+                           control={form.control}
+                           name="color"
+                           formLabel="Replacement Color"
+                           className="w-full"
+                           render={({ field }) => (
+                              <Input 
+                                 
+                              />
+                           )}
+                        />
+                    )}
+                </div>
             )}
         </form>
     </Form>
