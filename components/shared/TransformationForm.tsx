@@ -38,11 +38,15 @@ export const formSchema = z.object({
 })
 
 const TransformationForm = ({ action, data = null,
-userId, type, creditBalance }: TransformationFormProps) => {
+userId, type, creditBalance, config = null }: TransformationFormProps) => {
         const TransformationType = transformationTypes[type];
         const [image, setImage] = useState(data)
         const [newTransformation, setNewTransformation] = 
         useState<Transformations | null>(null);
+        const [isSubmitting, setIsSubmitting] = useState(false);
+        const [isTransforming, setIsTransforming] = useState(false);
+        const [transformationConfig, setTransformationConfig] = 
+        useState(config);
 
         const initialValues = data && action  === 'Update' ? {
                 title: data?.title,
@@ -74,6 +78,8 @@ userId, type, creditBalance }: TransformationFormProps) => {
         onChangeField: (value: string) => void) => {
 
         }
+    
+    const onTransformHandler = () => {}
     return (
      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -163,11 +169,24 @@ userId, type, creditBalance }: TransformationFormProps) => {
                     )}
                 </div>
             )}
-
-            <Button 
-            type="submit"
-            className="submit-button capitalize"
-            >Submit</Button>
+            <div className="flex flex-col gap-4">
+             <Button 
+              type="button"
+              className="submit-button capitalize"
+              disabled={isSubmitting}
+              >{isTransforming ? 'Transforming...' :
+              'Apply Transformation'}
+             </Button>
+             <Button 
+              type="submit"
+              className="submit-button capitalize"
+              disabled={isTransforming || newTransformation
+              === null }
+              onClick={onTransformHandler}
+              >Submit
+             </Button>
+            </div>
+            
         </form>
     </Form>
     );
