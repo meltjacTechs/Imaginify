@@ -14,6 +14,7 @@ import { CustomField } from "./CustomField"
 import { useState, useTransition } from "react"
 import { set } from "mongoose"
 import MediaUploader from "./MediaUploader"
+import TransformedImage from "./TransformedImage"
  
 export const formSchema = z.object({
     title: z.string(),
@@ -203,6 +204,15 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
                      />
                    )}
                 />
+
+                <TransformedImage
+                    image={image}
+                    type={type}
+                    title={form.getValues().title}
+                    isTransforming={isTransforming}
+                    setIsTransforming={setIsTransforming}
+                    transformationConfig={transformationConfig}
+                 />
             </div>
 
             <div className="flex flex-col gap-4">
