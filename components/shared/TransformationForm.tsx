@@ -4,30 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import {
-        Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue,
-    } from "@/components/ui/select"
-    
-
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
-import { AspectRatioKey, dataUrl, debounce } from "@/lib/utils"
+import { AspectRatioKey, dataUrl, debounce, deepMergeObjects } from "@/lib/utils"
 import { CustomField } from "./CustomField"
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { set } from "mongoose"
  
 export const formSchema = z.object({
@@ -48,6 +32,7 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
         const [isTransforming, setIsTransforming] = useState(false);
         const [transformationConfig, setTransformationConfig] = 
         useState(config);
+        const [isPending, startTransition] = useTransition();
 
         const initialValues = data && action  === 'Update' ? {
                 title: data?.title,
@@ -100,8 +85,18 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
               return onChangeField(value)
             }, 1000);
         }
-    
-    const onTransformHandler = () => {}
+    //TODO: return to updateCredits
+    const onTransformHandler = async () => {
+        setIsTransforming(true);
+        setTransformationConfig(
+            deepMergeObjects(newTransformation,
+                transformationConfig)
+        )
+        setNewTransformation(null);
+        startTransition(async () => {
+            // await updateCredits(userId, creditFee)
+        })
+    }
     return (
      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
