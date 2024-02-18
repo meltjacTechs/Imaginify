@@ -15,6 +15,7 @@ import { useState, useTransition } from "react"
 import { set } from "mongoose"
 import MediaUploader from "./MediaUploader"
 import TransformedImage from "./TransformedImage"
+import { updateCredits } from "@/lib/actions/user.actions"
  
 export const formSchema = z.object({
     title: z.string(),
@@ -87,7 +88,7 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
               return onChangeField(value)
             }, 1000);
         }
-    //TODO: return to updateCredits
+//TODO: Update creditFee to something more descriptive
     const onTransformHandler = async () => {
         setIsTransforming(true);
         setTransformationConfig(
@@ -96,7 +97,7 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
         )
         setNewTransformation(null);
         startTransition(async () => {
-            // await updateCredits(userId, creditFee)
+            await updateCredits(userId, -1)
         })
     }
     return (
