@@ -63,8 +63,8 @@ const MediaUploader = ({
                                 width={24}
                                 height={24}
                              />
-                             <p className="p-14-medium">Click here to upload image</p>
                         </div>
+                        <p className="p-14-medium">Click here to upload image</p>
                     </div>
                 )}
                 
