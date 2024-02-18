@@ -39,7 +39,7 @@ export const formSchema = z.object({
 
 const TransformationForm = ({ action, data = null,
 userId, type, creditBalance, config = null }: TransformationFormProps) => {
-        const TransformationType = transformationTypes[type];
+        const transformationType = transformationTypes[type];
         const [image, setImage] = useState(data)
         const [newTransformation, setNewTransformation] = 
         useState<Transformations | null>(null);
@@ -69,7 +69,18 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
 
     const onSelectFieldHandler = ( value: string,
         onChangeField :(value: string) => void) => {
+            const imageSize = aspectRatioOptions[value as
+            AspectRatioKey]
 
+            setImage((prevState: any) => ({
+                ...prevState,
+                aspectRatio: imageSize.aspectRatio,
+                height: imageSize.height,
+            }))
+
+            setNewTransformation(transformationType.config)
+
+            return onChangeField(value)
         }
 
 
