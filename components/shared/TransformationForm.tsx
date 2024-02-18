@@ -173,17 +173,18 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
              <Button 
               type="button"
               className="submit-button capitalize"
-              disabled={isSubmitting}
+              disabled={isTransforming || newTransformation
+                === null}
               >{isTransforming ? 'Transforming...' :
               'Apply Transformation'}
              </Button>
              <Button 
               type="submit"
               className="submit-button capitalize"
-              disabled={isTransforming || newTransformation
-              === null }
+              disabled={isSubmitting}
               onClick={onTransformHandler}
-              >Submit
+              >{isSubmitting ? 'Submitting...' : 
+              'Save Image'}
              </Button>
             </div>
             
