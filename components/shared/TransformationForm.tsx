@@ -25,9 +25,10 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
-import { AspectRatioKey, dataUrl } from "@/lib/utils"
+import { AspectRatioKey, dataUrl, debounce } from "@/lib/utils"
 import { CustomField } from "./CustomField"
 import { useState } from "react"
+import { set } from "mongoose"
  
 export const formSchema = z.object({
     title: z.string(),
@@ -87,7 +88,17 @@ userId, type, creditBalance, config = null }: TransformationFormProps) => {
     const onInputChangeHandler = (fieldName: string,
         value: string, type: string, 
         onChangeField: (value: string) => void) => {
+            debounce(() => {
+              setNewTransformation((prevState: any) => ({
+                ...prevState,
+                [type]: {
+                    ...prevState?.[type],
+                    [fieldName === 'prompt' ? 'prompt' : 'to']: value
+                }
+              }))
 
+              return onChangeField(value)
+            }, 1000);
         }
     
     const onTransformHandler = () => {}
